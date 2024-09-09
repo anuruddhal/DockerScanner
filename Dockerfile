@@ -38,43 +38,24 @@ ENV JAVA_HOME=/opt/java/openjdk \
 
 RUN java --version
 
+# Install ballerina - if $BASE_BALLERINA_DISTRIBUTION is removed from support, be sure to update the version here!
+RUN curl -s https://dist.ballerina.io/downloads/2201.8.3/ballerina-2201.8.3-swan-lake.zip --output ballerina.zip \
+    && unzip -q ./ballerina.zip -d / \
+    && rm ./ballerina.zip
 
-# FROM alpine:3.17.6
+ENV PATH=/ballerina-2201.8.3-swan-lake/bin:${PATH}
 
-# ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+RUN bal dist pull 2201.8.4
 
-# # fontconfig and ttf-dejavu added to support serverside image generation by Java programs
-# RUN apk add --no-cache fontconfig libretls musl-locales musl-locales-lang ttf-dejavu tzdata zlib libc6-compat gcompat\
-#     && rm -rf /var/cache/apk/*
+# Create a user called "ballerina"
+RUN adduser -D ballerina
 
-# ENV JAVA_VERSION jdk-17.0.7+7
+# Set the working directory and ownership to "ballerina"
+WORKDIR /home/ballerina
+RUN chown -R ballerina:ballerina /home/ballerina
 
-# RUN set -eux; \
-#     ARCH="$(apk --print-arch)"; \
-#     case "${ARCH}" in \
-#     amd64|x86_64) \
-#     ESUM='711f837bacf8222dee9e8cd7f39941a4a0acf869243f03e6038ca3ba189f66ca'; \
-#     BINARY_URL='https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.7%2B7/OpenJDK17U-jre_x64_alpine-linux_hotspot_17.0.7_7.tar.gz'; \
-#     ;; \
-#     *) \
-#     echo "Unsupported arch: ${ARCH}"; \
-#     exit 1; \
-#     ;; \
-#     esac; \
-#     wget -O /tmp/openjdk.tar.gz ${BINARY_URL}; \
-#     echo "${ESUM} */tmp/openjdk.tar.gz" | sha256sum -c -; \
-#     mkdir -p /opt/java/openjdk; \
-#     tar --extract \
-#     --file /tmp/openjdk.tar.gz \
-#     --directory /opt/java/openjdk \
-#     --strip-components 1 \
-#     --no-same-owner \
-#     ; \
-#     rm -rf /tmp/openjdk.tar.gz;
+USER ballerina
+# Set 2201.8.4 as distribution for ballerina user
+RUN /bin/bash -c 'bal dist use 2201.8.4'
 
-# ENV LD_PRELOAD=/lib/libgcompat.so.0
-
-# ENV JAVA_HOME=/opt/java/openjdk \
-#     PATH="/opt/java/openjdk/bin:$PATH"
-
-# RUN java --version 
+RUN bal version
