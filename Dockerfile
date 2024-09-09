@@ -1,9 +1,23 @@
+# Copyright 2022 WSO2 Inc. (http://wso2.org)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 FROM alpine:3.18.8
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 # fontconfig and ttf-dejavu added to support serverside image generation by Java programs
-RUN apk upgrade --no-cache && apk add --no-cache fontconfig libretls musl-locales musl-locales-lang ttf-dejavu tzdata zlib libc6-compat gcompat\
+RUN apk upgrade --no-cache && apk add --no-cache curl tar python3 jq unzip zip procps bash fontconfig libretls musl-locales musl-locales-lang ttf-dejavu tzdata zlib libc6-compat gcompat\
     && rm -rf /var/cache/apk/*
 
 ENV JAVA_VERSION jdk-17.0.9+9
