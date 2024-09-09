@@ -53,11 +53,16 @@ ENV JAVA_HOME=/opt/java/openjdk \
 RUN java --version
 
 # Install ballerina - if $BASE_BALLERINA_DISTRIBUTION is removed from support, be sure to update the version here!
-RUN curl -s https://dist.ballerina.io/downloads/2201.10.0/ballerina-2201.10.0-swan-lake-linux-x64.deb --output ballerina.deb \
-    && dpkg -i ballerina.deb / \
+RUN curl -s https://dist.ballerina.io/downloads/2201.8.3/ballerina-2201.8.3-swan-lake.zip --output ballerina.zip \
+    && unzip -q ./ballerina.zip -d / \
     && rm ./ballerina.zip
 
+ENV JAVA_HOME=/opt/java/openjdk \
+    PATH="/opt/java/openjdk/bin:$PATH"
+
 ENV PATH=/ballerina-2201.8.3-swan-lake/bin:${PATH}
+
+RUN bal version
 
 RUN bal dist pull 2201.8.4
 
@@ -70,5 +75,9 @@ RUN chown -R ballerina:ballerina /home/ballerina
 
 ENV JAVA_HOME=/opt/java/openjdk \
     PATH="/opt/java/openjdk/bin:$PATH"
+
+USER ballerina
+# Set 2201.8.4 as distribution for ballerina user
+RUN bal dist use 2201.8.4
 
 RUN bal version
