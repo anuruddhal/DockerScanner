@@ -62,22 +62,8 @@ ENV JAVA_HOME=/opt/java/openjdk \
 
 ENV PATH=/ballerina-2201.8.3-swan-lake/bin:${PATH}
 
+
 RUN bal version
-
 RUN bal dist pull 2201.8.4
-
-# Create a user called "ballerina"
-RUN adduser -D ballerina
-
-# Set the working directory and ownership to "ballerina"
-WORKDIR /home/ballerina
-RUN chown -R ballerina:ballerina /home/ballerina
-
-ENV JAVA_HOME=/opt/java/openjdk \
-    PATH="/opt/java/openjdk/bin:$PATH"
-
-USER ballerina
-# Set 2201.8.4 as distribution for ballerina user
-RUN bal dist use 2201.8.4
-
+RUN rm -r /ballerina-2201.8.3-swan-lake/dependencies/
 RUN bal version
