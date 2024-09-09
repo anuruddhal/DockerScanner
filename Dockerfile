@@ -68,8 +68,11 @@ RUN adduser -D ballerina
 WORKDIR /home/ballerina
 RUN chown -R ballerina:ballerina /home/ballerina
 
+ENV JAVA_HOME=/opt/java/openjdk \
+    PATH="/opt/java/openjdk/bin:$PATH"
+
 USER ballerina
 # Set 2201.8.4 as distribution for ballerina user
-RUN /bin/bash -c 'bal dist use 2201.8.4'
+RUN bal dist use 2201.8.4
 
 RUN bal version
