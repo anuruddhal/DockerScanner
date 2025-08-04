@@ -1,0 +1,21 @@
+/*
+### Try Service: 'ip' (http://localhost:8080/ip)
+
+*/
+/*
+#### GET /location
+
+
+**Query Parameters:**
+- `ip` [string] (Required)
+
+*/
+GET http://localhost:8080/ip/location?ip=24.48.0.1
+
+HTTP/1.1 200  - OK
+content-type: application/json
+connection: close
+server: ballerina
+date: Mon, 4 Aug 2025 09:37:14 +0530
+content-encoding: gzip
+content-length: 213
