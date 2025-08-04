@@ -2,9 +2,9 @@ import ballerina/http;
 
 service /ip on new http:Listener(8080) {
 
-    resource function get location(string ip) returns json|error {
-        http:Client ipApiClient = check new ("http://ip-api.com/json/");
-        json response = check ipApiClient->get("/" + ip);
+    resource function get location(string name) returns json|error {
+        http:Client ipApiClient = check new ("https://api.genderize.io/", httpVersion = http:HTTP_2_0);
+        json response = check ipApiClient->get("?name=" + name);
         return response;
     }
 }
